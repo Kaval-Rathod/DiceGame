@@ -1,6 +1,7 @@
 .numbers{
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .numbers h2{
