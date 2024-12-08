@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './gamePlay.css';
+import './GamePlay.css';
 import TotleScore from './TotleScore.jsx';
 import NumberSelector from './NumberSelector.jsx';
 import RollDice from './RollDice.jsx';
