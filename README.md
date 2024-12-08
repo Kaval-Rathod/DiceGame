@@ -1,8 +1,6 @@
-# React + Vite
+# How To Play
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Select any number 
+- Click on the dice image.
+- If the selected number matches the dice number, you earn the dice's value as points.
+- If your guess is wrong, 2 points will be deducted.
