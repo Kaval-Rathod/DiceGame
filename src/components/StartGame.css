@@ -1,0 +1,45 @@
+.StartGame {
+    text-align: center;
+    margin-top: 30vh;
+  }
+  
+  .StartGame h1 {
+    font-family: cursive;
+    /* color: #fd5944; */
+    font-size: 10vw;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+  }
+  
+  .play-now-button {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px 50px;
+    font-size: 1.5rem;
+    background-color: #fd5944;
+    border-radius: 5px;
+    color: aliceblue;
+    cursor: pointer;
+    border: 2px solid rgb(71, 0, 0);
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .play-now-button:hover {
+    background-color: #ff7a66;
+    border-color: rgb(100, 0, 0);
+  }
+  
+  .bt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .logout-btn{
+    border-radius: 10px;
+    border-color: #f9b6ab;
+    position: absolute;
+    top: 0;
+    left: 20px;
+  }

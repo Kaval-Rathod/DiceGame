@@ -4,7 +4,7 @@ import TotleScore from './TotleScore.jsx';
 import NumberSelector from './NumberSelector.jsx';
 import RollDice from './RollDice.jsx';
 
-function GamePlay() {
+function GamePlay({ logout }) {
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [currentDice, setCurrentDice] = useState(1);
   const [score, setScore] = useState(0);
@@ -58,6 +58,9 @@ function GamePlay() {
         </button>
         <button className="btn" onClick={() => setRes(!res)}>
           Show Rules
+        </button>
+        <button className="btn logout-btn" onClick={logout}>
+          Logout
         </button>
       </div>
       <div className={res ? 'rul' : 'non'}>

@@ -1,25 +1,21 @@
-import './HomeStyle.css';
+import './StartGame.css';
 
-const StartGame = ({ toggle }) => {
+const StartGame = ({ toggle, logout }) => {
   return (
     <div className="StartGame">
       <h1>Dice Game</h1>
+      <div className="bt">
       <button
-        style={{
-          fontFamily: 'Courier New, Courier, monospace',
-          padding: '10px 50px',
-          fontSize: '1.5rem',
-          backgroundColor: '#fd5944',
-          borderRadius: '5px',
-          color: 'aliceblue',
-          cursor: 'pointer',
-          border: '2px solid rgb(71, 0, 0)',
-          fontWeight: 'bold',
-        }}
+        aria-label="Start playing the Dice Game"
+        className="play-now-button"
         onClick={toggle}
       >
         Play Now
       </button>
+      <button className="logout-btn" onClick={logout}>
+        Logout
+      </button>
+      </div>
     </div>
   );
 };
