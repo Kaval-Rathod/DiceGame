@@ -1,0 +1,35 @@
+.numbers{
+    display: flex;
+    gap: 10px;
+}
+
+.numbers h2{
+    
+    border: 1px solid black;
+}
+
+.hd{
+    margin-bottom: 20px;
+}
+
+.numbers h2 {
+    cursor: pointer;
+    border: 2px solid white;
+    padding: 10px 20px;
+    margin: 5px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    /* transition: color 0.3s; */
+    border-color: black;
+}
+
+.numbers h2.selected {
+    background-color: black;
+    color: aliceblue;
+}
+
+.error{
+    color: #d73d3d;
+    font-size: large;
+}

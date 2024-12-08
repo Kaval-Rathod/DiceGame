@@ -1,0 +1,16 @@
+button{
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px 50px;
+    font-size: 1.5rem;
+    background-color: #fd5944;
+    border-radius: 5px;
+    color: aliceblue;
+    cursor: pointer;
+    border: 2px solid rgb(71, 0, 0);
+    font-weight: bold;
+
+}
+
+button:hover{
+    opacity: 80%;
+}

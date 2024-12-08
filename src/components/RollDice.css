@@ -1,0 +1,20 @@
+.ct {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.Dice {
+    display: inline-block;
+    cursor: pointer;
+    padding: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.Dice:hover {
+    transform: scale(1.1);
+}
+
+.Dice img {
+    width: 150px;
+    height: 150px;
+}
