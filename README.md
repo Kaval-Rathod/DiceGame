@@ -27,3 +27,7 @@ $ git clone https://github.com/Kaval-Rathod/DiceGame.git
 $ cd gameplay-app
 $ npm install
 $ npm run dev
+```
+```bash
+//in backend folder
+$node server.js
