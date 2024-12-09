@@ -48,16 +48,22 @@ const LoginSignup = ({ onLogin }) => {
 
     if (validateForm()) {
       try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const endpoint = isLogin
-          ? 'http://localhost:5000/login'
-          : 'http://localhost:5000/signup';
+          ? `${apiUrl}/login`
+          : `${apiUrl}/signup`;
 
         const payload = {
           email: formData.email,
           password: formData.password,
         };
 
-        const response = await axios.post(endpoint, payload);
+        const response = await axios.post(endpoint, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
 
         if (isLogin) {
           onLogin(response.data.token);
@@ -66,7 +72,11 @@ const LoginSignup = ({ onLogin }) => {
           setIsLogin(true);
         }
       } catch (error) {
-        setServerError(error.response?.data?.message || 'An error occurred');
+        console.error('API Error:', error);
+        setServerError(
+          error.response?.data?.message || 
+          'Unable to connect to server. Please try again later.'
+        );
       }
     }
   };

@@ -12,9 +12,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      fetch('http://localhost:5000/validate-token', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      fetch(`${apiUrl}/validate-token`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify({ token }),
       })
         .then((res) => {
