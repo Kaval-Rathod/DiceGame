@@ -1,3 +1,4 @@
+// Backend Code
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
@@ -16,7 +17,10 @@ app.use(express.json());
 
 // MongoDB connection
 mongoose
-  .connect('mongodb://127.0.0.1:27017/UserDataForDiceGame', { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect('mongodb://127.0.0.1:27017/UserDataForDiceGame', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error(err));
 
@@ -24,7 +28,6 @@ mongoose
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phoneNumber: { type: String },
 });
 
 const User = mongoose.model('User', userSchema);
@@ -34,14 +37,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secretKey';
 
 // Signup Route
 app.post('/signup', async (req, res) => {
-  const { email, password, phoneNumber } = req.body;
+  const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'User already exists' });
+    if (existingUser)
+      return res.status(400).json({ message: 'User already exists' });
 
-    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword, phoneNumber });
+    const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -57,11 +60,10 @@ app.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Check if the password is correct
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!isPasswordValid)
+      return res.status(401).json({ message: 'Invalid credentials' });
 
-    // Generate a JWT token
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
     res.status(200).json({ token });
   } catch (error) {
@@ -69,20 +71,21 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Validate Token Route
+// Token Validation Route
 app.post('/validate-token', (req, res) => {
-  const token = req.body.token;
+  const { token } = req.body;
   if (!token) {
-    return res.status(400).json({ message: 'Token is required' });
+    return res.status(400).json({ valid: false, message: 'No token provided' });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    res.status(200).json({ valid: true, userId: decoded.id });
+    return res.status(200).json({ valid: true, userId: decoded.id });
   } catch (error) {
-    res.status(401).json({ valid: false, message: 'Invalid or expired token' });
+    return res.status(401).json({ valid: false, message: 'Invalid or expired token' });
   }
 });
+
 
 // Middleware to verify JWT
 const verifyToken = (req, res, next) => {

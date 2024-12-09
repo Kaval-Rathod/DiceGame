@@ -7,6 +7,7 @@ import './App.css';
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state for token validation
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -16,20 +17,21 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) throw new Error('Token validation failed');
+          return res.json();
+        })
         .then((data) => {
           if (data.valid) {
             setIsAuthenticated(true);
           } else {
             localStorage.removeItem('authToken');
-            setIsAuthenticated(false);
           }
         })
-        .catch((error) => {
-          console.error('Error validating token:', error);
-          localStorage.removeItem('authToken');
-          setIsAuthenticated(false);
-        });
+        .catch(() => localStorage.removeItem('authToken'))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -43,7 +45,12 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsAuthenticated(false);
+    setIsGameStarted(false);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

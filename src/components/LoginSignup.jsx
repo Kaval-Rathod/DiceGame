@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './LoginSignup.css';
 
@@ -8,14 +7,14 @@ const LoginSignup = ({ onLogin }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    phoneNumber: ''
   });
   const [isLogin, setIsLogin] = useState(true);
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
 
   const validateForm = () => {
     const newErrors = {};
+
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -28,10 +27,8 @@ const LoginSignup = ({ onLogin }) => {
       newErrors.password = 'Password must be at least 8 characters';
     }
 
-    if (!isLogin) {
-      if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
-      }
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     setErrors(newErrors);
@@ -42,33 +39,34 @@ const LoginSignup = ({ onLogin }) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
       try {
         const endpoint = isLogin
           ? 'http://localhost:5000/login'
           : 'http://localhost:5000/signup';
 
-        const response = await axios.post(endpoint, {
+        const payload = {
           email: formData.email,
           password: formData.password,
-          ...(isLogin ? {} : { phoneNumber: formData.phoneNumber })
-        });
+        };
+
+        const response = await axios.post(endpoint, payload);
 
         if (isLogin) {
-          // Pass the token to the parent component
           onLogin(response.data.token);
-          navigate('/dashboard');
         } else {
-          alert('Signup Successful!');
+          alert('Signup Successful! Please log in.');
+          setIsLogin(true);
         }
       } catch (error) {
-        alert(error.response?.data?.message || 'An error occurred');
+        setServerError(error.response?.data?.message || 'An error occurred');
       }
     }
   };
@@ -99,23 +97,34 @@ const LoginSignup = ({ onLogin }) => {
             {errors.password && <p className="error-text">{errors.password}</p>}
           </div>
           {!isLogin && (
-            <>
-              <div className="form-group">
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
-              </div>
-            </>
+            <div className="form-group">
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              {errors.confirmPassword && (
+                <p className="error-text">{errors.confirmPassword}</p>
+              )}
+            </div>
           )}
           <button type="submit" className="submit-btn">
             {isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>
+        {serverError && <p className="error-text">{serverError}</p>}
+        <p className="toggle-message">
+          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+          <button
+            type="button"
+            className="toggle-btn"
+            onClick={() => setIsLogin((prev) => !prev)}
+          >
+            {isLogin ? 'Sign Up' : 'Login'}
+          </button>
+        </p>
       </div>
     </div>
   );

@@ -1,15 +1,11 @@
-import React from 'react'
-import './TotleScore.css'
+import React from 'react';
 
-function TotleScore({score}) {
+const TotleScore = ({ score }) => {
   return (
-    
-      <div className="score">
-        <h1>{score}</h1>
-        <p>Totle Score</p>
-      </div>
-    
-  )
-}
+    <div className="totle-score">
+      <h2>{score}</h2>
+    </div>
+  );
+};
 
-export default TotleScore
+export default TotleScore;

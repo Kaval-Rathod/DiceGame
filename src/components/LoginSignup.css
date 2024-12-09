@@ -117,3 +117,47 @@ body {
     margin-top: 5px;
     text-align: left;
   }
+
+  .submit-btn {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+  }
+  
+  .submit-btn:hover {
+    background-color: #b72525;
+  }
+  
+  .signup-btn {
+    background-color: #28a745; /* Green for signup */
+  }
+  
+  .signup-btn:hover {
+    background-color: #218838;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    border-radius: 5px;
+  }
+  
+  .toggle-btn:hover {
+    text-decoration: underline;
+  }
+  

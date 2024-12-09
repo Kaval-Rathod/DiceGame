@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './GamePlay.css';
 import TotleScore from './TotleScore.jsx';
 import NumberSelector from './NumberSelector.jsx';
@@ -9,10 +9,26 @@ function GamePlay({ logout }) {
   const [currentDice, setCurrentDice] = useState(1);
   const [score, setScore] = useState(0);
   const [error, setError] = useState('');
-  const [res, setRes] = useState(false);
+  const [showRules, setShowRules] = useState(false);
+
+  // Load game state from localStorage on mount
+  useEffect(() => {
+    const savedState = JSON.parse(localStorage.getItem('gameState'));
+    if (savedState) {
+      setSelectedNumber(savedState.selectedNumber);
+      setCurrentDice(savedState.currentDice);
+      setScore(savedState.score);
+    }
+  }, []);
+
+  // Save game state to localStorage whenever it changes
+  useEffect(() => {
+    const gameState = { selectedNumber, currentDice, score };
+    localStorage.setItem('gameState', JSON.stringify(gameState));
+  }, [selectedNumber, currentDice, score]);
 
   const generateRandomNumber = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min; // Generate random number between min and max
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   const rollDice = () => {
@@ -23,8 +39,8 @@ function GamePlay({ logout }) {
       setError('');
     }
 
-    const randomNumber = generateRandomNumber(1, 6); // Generate a number between 1 and 6
-    setCurrentDice(randomNumber); // Update state with the random number
+    const randomNumber = generateRandomNumber(1, 6);
+    setCurrentDice(randomNumber);
 
     if (selectedNumber === randomNumber) {
       setScore((prev) => prev + randomNumber);
@@ -36,6 +52,8 @@ function GamePlay({ logout }) {
 
   const resetScore = () => {
     setScore(0);
+    setSelectedNumber(null);
+    setCurrentDice(1);
   };
 
   return (
@@ -56,22 +74,26 @@ function GamePlay({ logout }) {
         <button className="btn" onClick={resetScore}>
           Reset Score
         </button>
-        <button className="btn" onClick={() => setRes(!res)}>
-          Show Rules
+        <button className="btn" onClick={() => setShowRules(!showRules)}>
+          {showRules ? 'Hide Rules' : 'Show Rules'}
         </button>
         <button className="btn logout-btn" onClick={logout}>
           Logout
         </button>
       </div>
-      <div className={res ? 'rul' : 'non'}>
-        <p className="rules">
-          Select any number <br />
-          Click on the dice image. <br />
-          If the selected number matches the dice number, you earn the dice's value as points.
-          <br />
-          If your guess is wrong, 2 points will be deducted.
-        </p>
-      </div>
+      {showRules && (
+        <div className="rules">
+          <p>
+            <strong>Game Rules:</strong>
+            <br />
+            1. Select a number from 1 to 6. <br />
+            2. Roll the dice. <br />
+            3. If the selected number matches the dice, you earn the dice's value as points.
+            <br />
+            4. If the guess is wrong, 2 points will be deducted. <br />
+          </p>
+        </div>
+      )}
     </main>
   );
 }
